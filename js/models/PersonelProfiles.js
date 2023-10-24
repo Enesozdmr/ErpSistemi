@@ -5,10 +5,10 @@ const personelProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role' // Roles koleksiyonuna referans
   },
-  companyID: { Number, require: true },
-  isCompanyAdmin: { Boolean, require: true },
-  isUser: { Boolean, require: true },
-  name: { String, require: true },
+  companyID: { type: Number, require: true },
+  isCompanyAdmin: { type: Boolean, require: true },
+  isUser: { type: Boolean, require: true },
+  name: { type: String, require: true },
   surname: String,
   tcNo: Number,
   gender: {
