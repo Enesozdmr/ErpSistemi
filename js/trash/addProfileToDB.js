@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const PersonelProfile = require('./PersonelProfiles');
-const Role = require('./Roles');
+const PersonelProfile = require('../models/PersonelProfiles');
+const Role = require('../models/Roles');
 
 const connectionString = 'mongodb+srv://enesozdmr:1234567890@cluster0.ccrouoo.mongodb.net/suaritma';
 

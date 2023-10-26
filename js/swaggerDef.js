@@ -1,22 +1,17 @@
-const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Dökümantasyonu',
+      title: 'ERP API',
       version: '1.0.0',
-      description: 'API için Swagger belgeleri.',
+      description: 'ERP API Documentation',
     },
-    servers: [
-      {
-        url: 'http://localhost:3000', // API'nizin adresi
-      },
-    ],
   },
-  apis: ['./routes/*.js'], // API rotalarının bulunduğu dizini ayarlayın
+  apis: ['./routes/*.js'], // API rotalarının bulunduğu dizini belirtin
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJsdoc(options);
 
 module.exports = swaggerSpec;

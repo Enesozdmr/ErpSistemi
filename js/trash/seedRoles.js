@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Role = require('./Roles');
+const Role = require('../models/Roles');
 
 
 const connectionString = 'mongodb+srv://enesozdmr:1234567890@cluster0.ccrouoo.mongodb.net/suaritma';
