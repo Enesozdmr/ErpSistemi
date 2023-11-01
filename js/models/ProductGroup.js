@@ -1,4 +1,4 @@
-// models/ProductGroup.js
+
 const mongoose = require('mongoose');
 
 const productGroupSchema = new mongoose.Schema({

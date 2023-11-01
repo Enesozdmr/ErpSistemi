@@ -1,64 +1,47 @@
 const mongoose = require('mongoose');
+const Route = require('./Routes'); // Modül yolu sadece "Routes"
+const CompanyProfile = require('./CompanyProfile');
+const Operation = require('./Operations');  // Modül yolunu doğru belirttiğinizden emin olun
 
+
+// MongoDB bağlantı dizesi
 const connectionString = 'mongodb+srv://enesozdmr:1234567890@cluster0.ccrouoo.mongodb.net/suaritma';
 
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const CompanyBillingAddress = require('./CompanyBillingAddress');
-const CompanyProfile = require('./CompanyProfile');
+(async () => {
+    try {
+        // Önceden kaydedilmiş bir companyProfile dokümanının _id'sini almak için sorgu yapın
+        const companyProfile = await CompanyProfile.findOne({}).exec();
+        if (!companyProfile) {
+            console.error('companyProfile bulunamadı.');
+            return;
+        }
+        const companyProfileID = companyProfile._id;
 
-// İlk CompanyProfile kaydını bulma
-CompanyProfile.findOne().then((firstCompanyProfile) => {
-    if (firstCompanyProfile) {
-        const firstCompanyProfileID = firstCompanyProfile._id;
+        // Önceden kaydedilmiş bir operation dokümanının _id'sini almak için sorgu yapın
+        const operation = await Operation.findOne({}).exec();
+        if (!operation) {
+            console.error('Operation bulunamadı.');
+            return;
+        }
+        const operationID = operation._id;
 
-        const billingAddressData = [
-            {
-                companyProfileID: firstCompanyProfileID,
-                billingType: 'Individual',
-                addressName: 'Ev Adresi',
-                name: 'John',
-                surname: 'Doe',
-                idNumber: '1234567890',
-                companyName: '',
-                taxNumber: '',
-                taxOffice: '',
-                phone: '1234567890',
-                email: 'john@example.com',
-                addressCountry: 'Country Name',
-                addressState: 'State Name',
-                addressCity: 'City Name',
-                address: '123 Main St, Apt 4B',
-            },
-            {
-                companyProfileID: firstCompanyProfileID,
-                billingType: 'Institutional',
-                addressName: 'Company HQ',
-                name: '',
-                surname: '',
-                idNumber: '',
-                companyName: 'ACME Inc.',
-                taxNumber: '0987654321',
-                taxOffice: 'Tax Office Name',
-                phone: '9876543210',
-                email: 'info@acme.com',
-                addressCountry: 'Another Country',
-                addressState: 'Another State',
-                addressCity: 'Another City',
-                address: '456 Business Blvd',
-            },
-        ];
+        // Rota oluştur
+        const route = new Route({
+            companyProfileID: companyProfileID,
+            operationID: operationID,
+            definition: 'Route 1 Definition',
+            queue: 1
+        });
 
-        CompanyBillingAddress.insertMany(billingAddressData)
-            .then(() => {
-                console.log('BillingAddress verileri MongoDB\'ye eklendi.');
-            })
-            .catch((error) => {
-                console.error('BillingAddress verileri eklenirken hata oluştu:', error);
-            });
-    } else {
-        console.error('İlk CompanyProfile kaydı bulunamadı.');
+        await route.save();
+
+        console.log('Route MongoDB\'ye başarıyla eklendi.');
+    } catch (error) {
+        console.error('Route ekleme hatası:', error);
+    } finally {
+        // MongoDB bağlantısını kapat
+        mongoose.connection.close();
     }
-}).catch((error) => {
-    console.error('İlk CompanyProfile kaydını bulma hatası:', error);
-});
+})();
